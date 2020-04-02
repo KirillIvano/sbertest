@@ -3,6 +3,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const dev = {
     output: {
@@ -30,7 +31,9 @@ const dev = {
             template: path.resolve(__dirname, 'src', 'index.html'),
             filename: 'index.html',
         }),
-
+        new CopyWebpackPlugin([
+            { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },
+        ]),
     ],
     mode: 'development',
     module: {
@@ -51,12 +54,7 @@ const dev = {
                             modules: true,
                         },
                     },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            paths: [path.resolve(__dirname, 'src/common/')],
-                        },
-                    },
+                    'less-loader',
                 ],
             },
 

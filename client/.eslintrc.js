@@ -26,10 +26,6 @@ module.exports = {
             'jsx': true
         }
     },
-    'globals': {
-        SERVER_ORIGIN: true,
-        IMAGE_HOST: true,
-    },
     'rules': {
         'indent': ['error', 4],
         'quotes': ['error', 'single'],

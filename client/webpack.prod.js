@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const prod = {
     entry: './src/index.js',
     output: {
-        path: path.resolve(__dirname, '..', 'simros', 'static', 'admin'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/admin/',
         filename: 'bundle.js',
     },

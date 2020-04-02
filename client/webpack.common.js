@@ -10,6 +10,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.bpmn$/,
+                use: 'raw-loader',
+            },
+            {
                 test: /\.js$/,
                 use: {
                     loader: 'babel-loader',
