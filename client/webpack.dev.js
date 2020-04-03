@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
-const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -25,9 +24,7 @@ const dev = {
     devtool: 'source-map',
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new CleanObsoleteChunks(),
         new HtmlWebpackPlugin({
-            minify: true,
             template: path.resolve(__dirname, 'src', 'index.html'),
             filename: 'index.html',
         }),
@@ -57,7 +54,6 @@ const dev = {
                     'less-loader',
                 ],
             },
-
         ],
     },
 };

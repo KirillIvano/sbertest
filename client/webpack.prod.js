@@ -10,7 +10,7 @@ const prod = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '/admin/',
+        publicPath: '/',
         filename: 'bundle.js',
     },
     optimization: {
@@ -33,25 +33,6 @@ const prod = {
 
         rules: [
             {
-                test: /\.(png|jpg|svg)$/,
-                use: [
-                    'url-loader',
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            mozjpeg: {
-                                progressive: true,
-                                quality: 65,
-                            },
-                            // optipng.enabled: false will disable optipng
-                            optipng: {
-                                enabled: true,
-                            },
-                        },
-                    },
-                ],
-            },
-            {
                 test: /\.(less|css)$/,
                 use: [
                     {
@@ -71,12 +52,7 @@ const prod = {
                             ],
                         },
                     },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            paths: [path.resolve(__dirname, 'src/common/')],
-                        },
-                    },
+                    'less-loader',
                 ],
             },
         ],
