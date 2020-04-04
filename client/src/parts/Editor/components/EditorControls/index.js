@@ -6,7 +6,6 @@ import {Button} from '@/components';
 const EditorControls = ({
     downloadhandler,
     saveHandler,
-    deleteHandler,
 }) => (
     <div className={styles.editorControls}>
         <Button
@@ -22,13 +21,6 @@ const EditorControls = ({
             className={styles.button}
         >
             {'Сохранить'}
-        </Button>
-        <Button
-            onClick={deleteHandler}
-            styling="danger"
-            className={styles.button}
-        >
-            {'Удалить'}
         </Button>
     </div>
 );

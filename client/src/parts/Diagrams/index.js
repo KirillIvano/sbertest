@@ -15,18 +15,26 @@ const DiagramCard = ({
 
     return (
         <div className={styles.diagramCard}>
-            <h1 className={styles.cardName}>
-                {name}
-            </h1>
-            <p className={styles.cardDate}>
-                {date}
-            </p>
+            <div className={styles.cardInfo}>
+                <h1 className={styles.cardName}>
+                    {name}
+                </h1>
+                <p className={styles.cardDate}>
+                    {date}
+                </p>
+            </div>
             <div className={styles.cardControls}>
                 <Button className={styles.button}>
                     {'Переименовать'}
                 </Button>
                 <Button className={styles.button}>
                     {'Редактировать'}
+                </Button>
+                <Button
+                    styling="danger"
+                    className={styles.button}
+                >
+                    {'Удалить'}
                 </Button>
             </div>
         </div>
