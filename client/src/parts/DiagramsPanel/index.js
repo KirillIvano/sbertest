@@ -13,7 +13,7 @@ import styles from './styles.less';
 
 const DiagramControls = ({
     disabled=false,
-    handleRename,
+    // handleRename,
     handleSelect,
     handleDelete,
 }) => (
@@ -56,7 +56,7 @@ const DiagramCard = ({
     );
 };
 
-const DiagramsSelector = ({
+const DiagramsPanel = ({
     isOpen,
     close,
 
@@ -132,4 +132,4 @@ const DiagramsSelector = ({
     );
 };
 
-export default withDiagramsPreviews(DiagramsSelector);
+export default withDiagramsPreviews(DiagramsPanel);
