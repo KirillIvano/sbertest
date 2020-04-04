@@ -5,10 +5,8 @@ const mapStateToProps = ({diagram}) => {
         diagrams,
         selectedDiagramId,
     } = diagram;
-    console.log(selectedDiagramId);
 
     const selectedDiagram = diagrams.find(({id}) => id === selectedDiagramId);
-    console.log(selectedDiagram);
     if (!selectedDiagram) return {};
     const {fileName} = selectedDiagram;
 

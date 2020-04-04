@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import {getDiagramUrl} from '@/helpers/getDiagramUrl';
 
-import {EditorControls} from './components';
+import {EditorControls, Preview, Preloader} from './components';
 import {withEditorProps} from './containers/withEditorProps';
 import styles from './styles.less';
 
@@ -19,6 +19,7 @@ const Editor = ({
 }) => {
     const modelerElementRef = useRef();
     const modelerRef = useRef();
+    const fileUrl = useMemo(() => getDiagramUrl(fileName), [fileName]);
 
     useEffect(() => {
         if (diagramFileLoadingSuccess) {
@@ -35,22 +36,23 @@ const Editor = ({
     }, [diagramFileLoadingSuccess]);
 
     if (diagramFileLoadingInProgress) {
-        return 'Загрузка...';
+        return <Preloader />;
     }
 
     if (diagramFileLoadingError) {
         return 'Произошла ошибка';
     }
 
-    // const handleSave = () => {
-    //     modeler.saveXML({ format: true }, (err, xml) => {
-
-    //     });
-    // };
+    if (!fileName) {
+        return <Preview />;
+    }
 
     return (
         <div ref={modelerElementRef} className={classnames(styles.editor)}>
-            <EditorControls downloadAddress={getDiagramUrl(fileName)} />
+            <EditorControls
+                downloadAddress={fileUrl}
+                saveHandler={saveXml}
+            />
         </div>
     );
 };
