@@ -28,6 +28,9 @@ const dev = {
             template: path.resolve(__dirname, 'src', 'index.html'),
             filename: 'index.html',
         }),
+        new webpack.DefinePlugin({
+            SERVER_ORIGIN: '"http://localhost:5000"',
+        }),
         new CopyWebpackPlugin([
             { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },
         ]),

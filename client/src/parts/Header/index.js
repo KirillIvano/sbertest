@@ -4,14 +4,16 @@ import {Button} from '@/components';
 
 import styles from './styles.less';
 
-const Header = () => (
+const Header = ({
+    openDiagramsPanel,
+}) => (
     <header className={styles.header}>
         <div className={styles.headerContent}>
-            <Button>
+            <Button onClick={openDiagramsPanel}>
                 Диаграммы
             </Button>
             <Button>
-                Войти
+                Выйти
             </Button>
         </div>
     </header>

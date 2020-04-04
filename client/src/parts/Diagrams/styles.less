@@ -1,0 +1,52 @@
+.diagramsPanel {
+    position: fixed;
+    height: 100vh;
+    width: 300px;
+    padding: 100px 20px 20px;
+    left: 0;
+    top: 0;
+
+    background: #333;
+    color: #eee;
+    z-index: 100;
+
+    transform: translateX(0);
+    transition: transform .6s ease-in-out;
+    overflow-y: auto;
+
+    .panelControls {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .diagramCard {
+        font-size: 1.2rem;
+        border-top: 2px solid #eee;
+        padding: 10px 20px;
+
+        .cardName {
+            font-size: 1.6rem;
+        }
+
+        .cardDate {
+            font-size: .8rem;
+            color: #bbb;
+        }
+
+        .cardControls {
+            display: flex;
+            font-size: .8rem;
+
+            .button:not(:first-child){
+                margin-left: 8px;
+            }
+        }
+    }
+}
+
+.diagramsPanel.hidden {
+    transform: translateX(-100%);
+}

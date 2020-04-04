@@ -1,21 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {render} from 'react-dom';
+import {Provider as StoreProvider} from 'react-redux';
+
+import {Header, Editor, DiagramsSelector} from '@/parts';
+import {store} from '@/redux';
+
 import styles from './css/app.less';
 
-import {Header, Editor} from '@/parts';
-import {Button} from '@/components';
 const root = document.getElementById('root');
 
-const App = () => (
-    <div className={styles.root}>
-        <Header />
-        <Editor />
-    </div>
-);
+const usePanelState = defaultVal => {
+    const [val, setVal] = useState(defaultVal);
+    return [
+        val,
+        () => setVal(true),
+        () => setVal(false),
+    ];
+};
+
+const App = () => {
+    const [isDiagramPanelOpened, openDiagramsPanel, closeDiagramsPanel] = usePanelState(true);
+
+    return (
+        <div className={styles.root}>
+            <Header openDiagramsPanel={openDiagramsPanel} />
+            <Editor />
+            <DiagramsSelector close={closeDiagramsPanel} isOpen={isDiagramPanelOpened} />
+        </div>
+    );
+};
 
 render(
-    <App />,
+    <StoreProvider store={store()}>
+        <App />
+    </StoreProvider>,
     root,
 );
-
-console.log('xxxx');

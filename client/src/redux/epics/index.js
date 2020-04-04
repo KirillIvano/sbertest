@@ -1,3 +1,5 @@
 import {combineEpics} from 'redux-observable';
 
-export default combineEpics();
+import diagramsEpic from './diagrams';
+
+export default combineEpics(diagramsEpic);
