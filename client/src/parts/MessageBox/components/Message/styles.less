@@ -1,0 +1,30 @@
+@keyframes fadeout {
+    from {
+        opacity: .9;
+    }
+
+    to {
+        opacity: .5;
+    }
+}
+
+.message {
+    background: #333;
+    color: #eee;
+    padding: 12px;
+    animation: fadeout 3s ease-in;
+    pointer-events: none;
+
+    .title {
+        font-size: 16px;
+        font-weight: bold;   
+    }
+    .content {
+        margin-top: 6px;
+        font-size: 14px;
+    }
+}
+
+.message.error {
+    background: #c00;
+}
