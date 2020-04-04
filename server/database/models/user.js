@@ -3,11 +3,17 @@ const mongoose = require('mongoose');
 const {createPasswordHash} = require('~/helpers/passwordHash');
 const {createRandomKey} = require('~/helpers/createRandomKey');
 
-const UserModel = new mongoose.Schema({
+const {DiagramSchema} = require('~/database/models/diagram');
+
+const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         unique: true,
+    },
+    diagrams: {
+        type: [DiagramSchema],
+        default: () => [],
     },
 
     passwordHash: {
@@ -20,19 +26,19 @@ const UserModel = new mongoose.Schema({
     },
 });
 
-UserModel.methods.setPassword = async function(password){
+UserSchema.methods.setPassword = async function(password){
     const passwordSalt = createRandomKey();
     this.passwordHash = await createPasswordHash(password, passwordSalt);
     this.passwordSalt = passwordSalt;
 };
 
-UserModel.methods.validatePassword = async function(password) {
+UserSchema.methods.validatePassword = async function(password) {
     const hash = await createPasswordHash(password, this.passwordSalt);
     return this.passwordHash === hash;
 };
 
-const AdminModel = mongoose.model('admin', UserModel);
+const UserModel = mongoose.model('user', UserSchema);
 
 module.exports = {
-    AdminModel,
+    UserModel,
 };

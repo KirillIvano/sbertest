@@ -7,10 +7,10 @@ const http = require('http');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
-const path = require('path');
 
 require('~/initializers/initDb');
 require('~/initializers/initPassport');
+const routes = require('./routes');
 
 app.use(cors({credentials: true, origin: ['http://localhost:8080']}));
 app.use(morgan('dev'));
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 
-app.use('/images', express.static(path.resolve(__dirname, 'images')));
+app.use('/api/', routes);
 
 const server = http.createServer(app);
 

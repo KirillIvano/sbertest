@@ -20,7 +20,8 @@
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
-    "passport-http-bearer": "^1.0.1"
+    "passport-http-bearer": "^1.0.1",
+    "ramda": "^0.27.0"
   },
   "devDependencies": {
     "cookie-parser": "^1.4.5",
