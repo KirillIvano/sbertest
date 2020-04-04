@@ -8,12 +8,16 @@ import {
 
     deleteDiagramErrorAction,
     deleteDiagramSuccessAction,
+
+    createDiagramSuccessAction,
+    createDiagramErrorAction,
 } from '@/redux/actions/diagrams';
 import {
     GET_DIAGRAMS_PREVIEWS,
     DELETE_DIAGRAM,
+    CREATE_DIAGRAM,
 } from '@/redux/names/diagrams';
-import {getDiagramsPreviews, deleteDiagram} from '@/services/diagrams';
+import {getDiagramsPreviews, deleteDiagram, createDiagram} from '@/services/diagrams';
 import {showNormalMessage, showErrorMessage} from '@/redux/actions/messages';
 
 const getAllDiagramsEpic =
@@ -64,7 +68,35 @@ const deleteDiagramEpic =
         );
 
 
+const createDiagramEpic =
+action$ =>
+    action$.pipe(
+        ofType(CREATE_DIAGRAM),
+        exhaustMap(
+            ({payload: {name}}) =>
+                from(
+                    createDiagram(name),
+                ).pipe(
+                    exhaustMap(({error, diagram}) => {
+                        if (error) {
+                            return of(
+                                createDiagramErrorAction(error),
+                                showErrorMessage('Создание диаграммы', error),
+                            );
+                        }
+
+                        return of(
+                            createDiagramSuccessAction(diagram),
+                            showNormalMessage('Создание диаграммы', 'Успешно создано'),
+                        );
+                    }),
+                ),
+        ),
+    );
+
+
 export default combineEpics(
     getAllDiagramsEpic,
     deleteDiagramEpic,
+    createDiagramEpic,
 );

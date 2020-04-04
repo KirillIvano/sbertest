@@ -11,8 +11,8 @@ const Button = ({
     ...additionalProps
 }) => (
     <button
-        {...additionalProps}
         type={'button'}
+        {...additionalProps}
         className={
             classnames(
                 styles.button,

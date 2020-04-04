@@ -5,7 +5,7 @@ import {Button, CloseIcon, ConfirmationModal} from '@/components';
 import {formatDate} from '@/helpers/formatDate';
 import {useModalState} from '@/hooks/useModalState';
 
-import {DeleteModal} from './components';
+import {DeleteModal, CreateModal} from './components';
 import {withDiagramsPreviews} from './containers/withDiagramsPreviews';
 import {useDeleteModalState} from './hooks/useDeleteModalState';
 import styles from './styles.less';
@@ -50,8 +50,8 @@ const DiagramCard = ({
                 <p className={styles.cardDate}>
                     {date}
                 </p>
-                <DiagramControls handleDelete={handleDelete} />
             </div>
+            <DiagramControls handleDelete={handleDelete} />
         </div>
     );
 };
@@ -78,7 +78,7 @@ const DiagramsPanel = ({
         closeDeleteModal,
         deletedId,
     } = useDeleteModalState(false);
-    const [isRenameModalOpened, openRenameModal, closeRenameModal] = useModalState(false);
+    const [isCreateModalOpened, openCreateModal, closeCreateModal] = useModalState(false);
 
     if (diagramsGettingError) {
         return (
@@ -105,6 +105,9 @@ const DiagramsPanel = ({
         }>
             <div className={styles.panelControls}>
                 <CloseIcon close={close} styling={'dark'} />
+                <Button onClick={openCreateModal}>
+                    {'Создать диаграмму'}
+                </Button>
             </div>
             {
                 diagrams.map(
@@ -127,6 +130,10 @@ const DiagramsPanel = ({
                 isOpen={isDeleteModalOpened}
                 handleClose={closeDeleteModal}
                 deletedId={deletedId}
+            />
+            <CreateModal
+                isOpen={isCreateModalOpened}
+                handleClose={closeCreateModal}
             />
         </div>
     );

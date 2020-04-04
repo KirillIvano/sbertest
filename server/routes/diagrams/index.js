@@ -18,7 +18,6 @@ router.get('/previews', async (req, res) => {
     const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
 
     const diagrams = await getDiagrams(userId);
-
     jsonResponse(res, 200, {diagrams});
 });
 
@@ -54,11 +53,18 @@ router.delete('/delete/:diagramId', async (req, res) => {
     const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
     const {diagramId} = req.params;
 
-    const diagram = await getDiagramByIds(userId, diagramId);
-    if (!diagram) {
-        jsonResponse(res, 404, {error: 'Диаграмма не найдена'});
+    let diagram;
+    try {
+        diagram = await getDiagramByIds(userId, diagramId);
+        if (!diagram) {
+            jsonResponse(res, 404, {error: 'Диаграмма не найдена'});
+            return;
+        }
+    } catch {
+        jsonResponse(res, 500, {error: 'Ошибка при поиске диаграммы в базе'});
         return;
     }
+
 
     const {fileName} = diagram;
 

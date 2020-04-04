@@ -6,7 +6,10 @@ import {
     DELETE_DIAGRAM,
     DELETE_DIAGRAM_SUCCESS,
     DELETE_DIAGRAM_ERROR,
-    DELETE_DIAGRAM_FORGET,
+
+    CREATE_DIAGRAM,
+    CREATE_DIAGRAM_SUCCESS,
+    CREATE_DIAGRAM_ERROR,
 } from '@/redux/names/diagrams';
 
 const INITIAL_STATE = {
@@ -19,6 +22,10 @@ const INITIAL_STATE = {
     diagramDeletingInProgress: false,
     diagramDeletingSuccess: false,
     diagramDeletingError: null,
+
+    diagramCreatingInProgress: false,
+    diagramCreatingSuccess: false,
+    diagramCreatingError: null,
 };
 
 export const diagramsReducer = (
@@ -83,16 +90,39 @@ export const diagramsReducer = (
             diagramDeletingError: error,
         };
     }
-    case DELETE_DIAGRAM_FORGET: {
+
+    case CREATE_DIAGRAM: {
         return {
             ...state,
-            diagramDeletingInProgress: false,
-            diagramDeletingSuccess: false,
-            diagramDeletingError: null,
+            diagramCreatingInProgress: true,
+            diagramCreatingSuccess: false,
+            diagramCreatingError: null,
         };
     }
+    case CREATE_DIAGRAM_SUCCESS: {
+        const {diagrams} = state;
+        const {diagram} = payload;
+        const newDiagrams = [diagram, ...diagrams];
+
+        return {
+            ...state,
+            diagrams: newDiagrams,
+            diagramCreatingInProgress: false,
+            diagramCreatingSuccess: true,
+        };
+    }
+    case CREATE_DIAGRAM_ERROR: {
+        const {error} = payload;
+        return {
+            ...state,
+            diagramCreatingInProgress: false,
+            diagramCreatingError: error,
+        };
+    }
+
     default: {
         return state;
     }
     }
 };
+

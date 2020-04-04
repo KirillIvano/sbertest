@@ -6,7 +6,10 @@ import {
     DELETE_DIAGRAM,
     DELETE_DIAGRAM_SUCCESS,
     DELETE_DIAGRAM_ERROR,
-    DELETE_DIAGRAM_FORGET,
+
+    CREATE_DIAGRAM,
+    CREATE_DIAGRAM_SUCCESS,
+    CREATE_DIAGRAM_ERROR,
 } from '@/redux/names/diagrams';
 
 export const getDiagramsPreviewsAction = () => ({
@@ -43,6 +46,22 @@ export const deleteDiagramErrorAction = error => ({
         error,
     },
 });
-export const deleteDiagramForgetAction = () => ({
-    type: DELETE_DIAGRAM_FORGET,
+
+export const createDiagramAction = name => ({
+    type: CREATE_DIAGRAM,
+    payload: {
+        name,
+    },
+});
+export const createDiagramSuccessAction = diagram => ({
+    type: CREATE_DIAGRAM_SUCCESS,
+    payload: {
+        diagram,
+    },
+});
+export const createDiagramErrorAction = error => ({
+    type: CREATE_DIAGRAM_ERROR,
+    payload: {
+        error,
+    },
 });

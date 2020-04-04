@@ -7,6 +7,7 @@
     top: 0;
 
     background: #333;
+    box-shadow: 0 0 100px rgba(0, 0, 0, .6);
     color: #eee;
     z-index: 10;
 
@@ -20,6 +21,9 @@
         top: 0;
         width: 100%;
         padding: 20px;
+    
+        display: flex;
+        justify-content: space-between;
     }
 
     .diagramCard {
@@ -58,5 +62,5 @@
 }
 
 .diagramsPanel.hidden {
-    transform: translateX(-100%);
+    transform: translateX(-150%);
 }

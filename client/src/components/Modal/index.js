@@ -31,7 +31,9 @@ const Modal = ({
 
         onRequestClose={close}
     >
-        {closeable ? <CloseIcon close={close} />: null}
+        {closeable ? <div className={styles.modalControls}>
+            <CloseIcon close={close} />
+        </div>: null}
         {children}
     </ReactModal>
 );

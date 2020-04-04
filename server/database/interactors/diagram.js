@@ -11,8 +11,11 @@ const getDiagrams = async userId => {
 
 const getDiagramByIds = async (userId, diagramId) => {
     const user = await UserModel.findById(userId);
+    if (!user) return null;
+
     const {diagrams} = user;
     const diagram = diagrams.find(({id}) => id === diagramId);
+    if (!diagram) return null;
 
     return clientifyDiagram(diagram);
 };
