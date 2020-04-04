@@ -2,7 +2,11 @@ import {
     GET_DIAGRAMS_PREVIEWS,
     GET_DIAGRAMS_PREVIEWS_ERROR,
     GET_DIAGRAMS_PREVIEWS_SUCCESS,
-    GET_DIAGRAMS_PREVIEWS_FORGET,
+
+    DELETE_DIAGRAM,
+    DELETE_DIAGRAM_SUCCESS,
+    DELETE_DIAGRAM_ERROR,
+    DELETE_DIAGRAM_FORGET,
 } from '@/redux/names/diagrams';
 
 export const getDiagramsPreviewsAction = () => ({
@@ -20,6 +24,25 @@ export const getDiagramsPreviewsErrorAction = error => ({
         error,
     },
 });
-export const getDiagramsPreviewsForgetAction = () => ({
-    type: GET_DIAGRAMS_PREVIEWS_FORGET,
+
+export const deleteDiagramAction = diagramId => ({
+    type: DELETE_DIAGRAM,
+    payload: {
+        diagramId,
+    },
+});
+export const deleteDiagramSuccessAction = diagramId => ({
+    type: DELETE_DIAGRAM_SUCCESS,
+    payload: {
+        diagramId,
+    },
+});
+export const deleteDiagramErrorAction = error => ({
+    type: DELETE_DIAGRAM_ERROR,
+    payload: {
+        error,
+    },
+});
+export const deleteDiagramForgetAction = () => ({
+    type: DELETE_DIAGRAM_FORGET,
 });

@@ -1,31 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 import {Provider as StoreProvider} from 'react-redux';
 
-import {Header, Editor, DiagramsSelector} from '@/parts';
+import {Header, Editor, DiagramsSelector, MessageBox} from '@/parts';
 import {store} from '@/redux';
+import {useModalState} from '@/hooks/useModalState';
 
 import styles from './css/app.less';
 
 const root = document.getElementById('root');
 
-const usePanelState = defaultVal => {
-    const [val, setVal] = useState(defaultVal);
-    return [
-        val,
-        () => setVal(true),
-        () => setVal(false),
-    ];
-};
-
 const App = () => {
-    const [isDiagramPanelOpened, openDiagramsPanel, closeDiagramsPanel] = usePanelState(true);
+    const [isDiagramPanelOpened, openDiagramsPanel, closeDiagramsPanel] = useModalState(true);
 
     return (
         <div className={styles.root}>
             <Header openDiagramsPanel={openDiagramsPanel} />
             <Editor />
             <DiagramsSelector close={closeDiagramsPanel} isOpen={isDiagramPanelOpened} />
+            <MessageBox />
         </div>
     );
 };

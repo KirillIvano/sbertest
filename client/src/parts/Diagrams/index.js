@@ -1,15 +1,43 @@
 import React, {useEffect, useMemo} from 'react';
 import classnames from 'classnames';
 
-import {Button, CloseIcon} from '@/components';
+import {Button, CloseIcon, ConfirmationModal} from '@/components';
 import {formatDate} from '@/helpers/formatDate';
+import {useModalState} from '@/hooks/useModalState';
 
+import {DeleteModal} from './components';
 import {withDiagramsPreviews} from './containers/withDiagramsPreviews';
+import {useDeleteModalState} from './hooks/useDeleteModalState';
 import styles from './styles.less';
+
+
+const DiagramControls = ({
+    disabled=false,
+    handleRename,
+    handleSelect,
+    handleDelete,
+}) => (
+    <div className={styles.cardControls}>
+        <Button className={styles.button}>
+            {'Переименовать'}
+        </Button>
+        <Button className={styles.button}>
+            {'Редактировать'}
+        </Button>
+        <Button
+            styling="danger"
+            className={styles.button}
+            onClick={handleDelete}
+        >
+            {'Удалить'}
+        </Button>
+    </div>
+);
 
 const DiagramCard = ({
     name,
     lastUpdate,
+    handleDelete,
 }) => {
     const date = useMemo(() => formatDate(lastUpdate), [lastUpdate]);
 
@@ -22,20 +50,7 @@ const DiagramCard = ({
                 <p className={styles.cardDate}>
                     {date}
                 </p>
-            </div>
-            <div className={styles.cardControls}>
-                <Button className={styles.button}>
-                    {'Переименовать'}
-                </Button>
-                <Button className={styles.button}>
-                    {'Редактировать'}
-                </Button>
-                <Button
-                    styling="danger"
-                    className={styles.button}
-                >
-                    {'Удалить'}
-                </Button>
+                <DiagramControls handleDelete={handleDelete} />
             </div>
         </div>
     );
@@ -56,6 +71,14 @@ const DiagramsSelector = ({
             getPreviews();
         }
     }, [isOpen]);
+
+    const {
+        isDeleteModalOpened,
+        openDeleteModal,
+        closeDeleteModal,
+        deletedId,
+    } = useDeleteModalState(false);
+    const [isRenameModalOpened, openRenameModal, closeRenameModal] = useModalState(false);
 
     if (diagramsGettingError) {
         return (
@@ -84,8 +107,27 @@ const DiagramsSelector = ({
                 <CloseIcon close={close} styling={'dark'} />
             </div>
             {
-                diagrams.map(({id, name, lastUpdate}) => <DiagramCard key={id} name={name} lastUpdate={lastUpdate} />)
+                diagrams.map(
+                    ({
+                        id,
+                        name,
+                        lastUpdate,
+                    }) => (
+                        <DiagramCard
+                            handleDelete={() => openDeleteModal(id)}
+                            key={id}
+                            name={name}
+                            lastUpdate={lastUpdate}
+                        />
+                    ),
+                )
             }
+
+            <DeleteModal
+                isOpen={isDeleteModalOpened}
+                handleClose={closeDeleteModal}
+                deletedId={deletedId}
+            />
         </div>
     );
 };
