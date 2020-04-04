@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {getDiagramsPreviewsAction} from '@/redux/actions/diagrams';
+import {getDiagramsPreviewsAction, selectDiagramAction} from '@/redux/actions/diagrams';
 
 const mapStateToProps = ({diagram}) => {
     const {
@@ -17,6 +17,7 @@ const mapStateToProps = ({diagram}) => {
 
 const mapDispatchToProps = (dispatch) => ({
     getPreviews: () => dispatch(getDiagramsPreviewsAction()),
+    selectDiagram: diagramId => dispatch(selectDiagramAction(diagramId)),
 });
 
 export const withDiagramsPreviews = connect(mapStateToProps, mapDispatchToProps);

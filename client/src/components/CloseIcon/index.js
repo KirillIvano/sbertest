@@ -5,15 +5,15 @@ import styles from './styles.less';
 
 const CloseIcon = ({
     close,
-    styling='light',
+    theme='light',
 }) => (
     <div
         onClick={close}
         className={classnames(
             styles.closeIcon,
             {
-                [styles.dark]: styling === 'dark',
-                [styles.light]: styling === 'light',
+                [styles.dark]: theme === 'dark',
+                [styles.light]: theme === 'light',
             },
         )}
     />

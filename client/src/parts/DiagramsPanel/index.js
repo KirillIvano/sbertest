@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import classnames from 'classnames';
 
-import {Button, CloseIcon, ConfirmationModal} from '@/components';
+import {Button, CloseIcon} from '@/components';
 import {formatDate} from '@/helpers/formatDate';
 import {useModalState} from '@/hooks/useModalState';
 
@@ -21,7 +21,10 @@ const DiagramControls = ({
         <Button className={styles.button}>
             {'Переименовать'}
         </Button>
-        <Button className={styles.button}>
+        <Button
+            className={styles.button}
+            onClick={handleSelect}
+        >
             {'Редактировать'}
         </Button>
         <Button
@@ -36,7 +39,9 @@ const DiagramControls = ({
 
 const DiagramCard = ({
     name,
+    id,
     lastUpdate,
+    handleSelect,
     handleDelete,
 }) => {
     const date = useMemo(() => formatDate(lastUpdate), [lastUpdate]);
@@ -51,7 +56,10 @@ const DiagramCard = ({
                     {date}
                 </p>
             </div>
-            <DiagramControls handleDelete={handleDelete} />
+            <DiagramControls
+                handleDelete={() => handleDelete(id)}
+                handleSelect={() => handleSelect(id)}
+            />
         </div>
     );
 };
@@ -65,12 +73,20 @@ const DiagramsPanel = ({
     diagrams,
 
     getPreviews,
+    selectDiagram,
 }) => {
     useEffect(() => {
         if (isOpen) {
             getPreviews();
         }
     }, [isOpen]);
+
+    const sortedDiagrams = useMemo(
+        () => [...diagrams].sort(
+            (a, b) => a < b ? 1 : -1,
+        ),
+        [diagrams],
+    );
 
     const {
         isDeleteModalOpened,
@@ -104,23 +120,23 @@ const DiagramsPanel = ({
             )
         }>
             <div className={styles.panelControls}>
-                <CloseIcon close={close} styling={'dark'} />
+                <CloseIcon close={close} theme={'dark'} />
                 <Button onClick={openCreateModal}>
                     {'Создать диаграмму'}
                 </Button>
             </div>
             {
-                diagrams.map(
+                sortedDiagrams.map(
                     ({
                         id,
                         name,
                         lastUpdate,
                     }) => (
                         <DiagramCard
-                            handleDelete={() => openDeleteModal(id)}
+                            handleDelete={openDeleteModal}
+                            handleSelect={selectDiagram}
                             key={id}
-                            name={name}
-                            lastUpdate={lastUpdate}
+                            {...{id, name, lastUpdate}}
                         />
                     ),
                 )

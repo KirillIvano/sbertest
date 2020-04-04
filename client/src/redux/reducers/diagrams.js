@@ -10,10 +10,14 @@ import {
     CREATE_DIAGRAM,
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
+
+    SELECT_DIAGRAM,
 } from '@/redux/names/diagrams';
 
 const INITIAL_STATE = {
     diagrams: [],
+
+    selectedDiagramId: null,
 
     diagramsGettingInProgress: false,
     diagramsGettingSuccess: false,
@@ -120,6 +124,13 @@ export const diagramsReducer = (
         };
     }
 
+    case SELECT_DIAGRAM: {
+        const {diagramId} = payload;
+        return {
+            ...state,
+            selectedDiagramId: diagramId,
+        };
+    }
     default: {
         return state;
     }

@@ -1,21 +1,24 @@
 import React from 'react';
 import styles from './styles.less';
 
-import {Button} from '@/components';
+import {Button, Link} from '@/components';
 
 const EditorControls = ({
-    downloadhandler,
+    disabled=false,
+    downloadAddress,
     saveHandler,
 }) => (
     <div className={styles.editorControls}>
-        <Button
-            onClick={downloadhandler}
+        <Link
+            disabled={disabled}
+            href={downloadAddress}
             styling="normal"
             className={styles.button}
         >
             {'Скачать'}
-        </Button>
+        </Link>
         <Button
+            disabled={disabled}
             onClick={saveHandler}
             styling="normal"
             className={styles.button}

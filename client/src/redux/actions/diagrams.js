@@ -10,6 +10,8 @@ import {
     CREATE_DIAGRAM,
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
+
+    SELECT_DIAGRAM,
 } from '@/redux/names/diagrams';
 
 export const getDiagramsPreviewsAction = () => ({
@@ -63,5 +65,12 @@ export const createDiagramErrorAction = error => ({
     type: CREATE_DIAGRAM_ERROR,
     payload: {
         error,
+    },
+});
+
+export const selectDiagramAction = diagramId => ({
+    type: SELECT_DIAGRAM,
+    payload: {
+        diagramId,
     },
 });

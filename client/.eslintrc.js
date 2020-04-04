@@ -8,7 +8,8 @@ module.exports = {
     'globals': {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly',
-        'SERVER_ORIGIN': 'readonly'
+        'SERVER_ORIGIN': 'readonly',
+        'DIAGRAMS_ORIGIN': 'readonly'
     },
     'plugins': [
         'react',

@@ -1,33 +1,58 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useMemo} from 'react';
 import Modeler from 'bpmn-js/lib/Modeler';
 import classnames from 'classnames';
 
-import {EditorControls} from './components';
+import {getDiagramUrl} from '@/helpers/getDiagramUrl';
 
+import {EditorControls} from './components';
+import {withEditorProps} from './containers/withEditorProps';
 import styles from './styles.less';
-import initialDiagram from './initialDiagram';
 
 const Editor = ({
-    diagram=initialDiagram,
+    fileName,
+
+    diagramFileLoadingInProgress,
+    diagramFileLoadingError,
+    diagramFileLoadingSuccess,
+
+    saveXml,
 }) => {
-    const ref = useRef();
+    const modelerElementRef = useRef();
+    const modelerRef = useRef();
 
     useEffect(() => {
-        setTimeout(() => {
-            const modeler = new Modeler({
-                // here I need to pass the ref
-                container: ref.current,
-            });
+        if (diagramFileLoadingSuccess) {
+            setTimeout(() => {
+                const modeler = new Modeler({
+                    container: modelerElementRef.current,
+                });
 
-            modeler.importXML(diagram);
-        }, 0);
-    }, []);
+                modeler.importXML(fileName);
+
+                modelerRef.current = modeler;
+            }, 0);
+        }
+    }, [diagramFileLoadingSuccess]);
+
+    if (diagramFileLoadingInProgress) {
+        return 'Загрузка...';
+    }
+
+    if (diagramFileLoadingError) {
+        return 'Произошла ошибка';
+    }
+
+    // const handleSave = () => {
+    //     modeler.saveXML({ format: true }, (err, xml) => {
+
+    //     });
+    // };
 
     return (
-        <div ref={ref} className={classnames(styles.editor)}>
-            <EditorControls />
+        <div ref={modelerElementRef} className={classnames(styles.editor)}>
+            <EditorControls downloadAddress={getDiagramUrl(fileName)} />
         </div>
     );
 };
 
-export default Editor;
+export default withEditorProps(Editor);

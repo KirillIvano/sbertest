@@ -30,6 +30,7 @@ const dev = {
         }),
         new webpack.DefinePlugin({
             SERVER_ORIGIN: '"http://localhost:5000"',
+            DIAGRAMS_ORIGIN: '"http://localhost:5000/diagrams"',
         }),
         new CopyWebpackPlugin([
             { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },
