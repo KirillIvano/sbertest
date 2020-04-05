@@ -17,36 +17,38 @@ const {
 router.get('/previews', async (req, res) => {
     const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
 
-    const diagrams = await getDiagrams(userId);
-    jsonResponse(res, 200, {diagrams});
+    try {
+        const diagrams = await getDiagrams(userId);
+        jsonResponse(res, 200, {diagrams});
+    } catch {
+        jsonResponse(res, 200, {error: 'Не удалось получить диаграммы'});
+    }
 });
 
-router.post(
-    '/add',
-    async (req, res) => {
-        const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
-        const {name} = req.body;
+router.post('/add', async (req, res) => {
+    const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
+    const {name} = req.body;
 
-        if (!name) {
-            jsonResponse(res, 400, {error: 'Имя - обязательный параметр'});
-            return;
-        }
+    if (!name) {
+        jsonResponse(res, 400, {error: 'Имя - обязательный параметр'});
+        return;
+    }
 
-        let diagramFileName;
-        try {
-            diagramFileName = await createDiagramFile(userId);
-        } catch {
-            jsonResponse(res, 500, {error: 'Не удалось создать диаграмму'});
-            return;
-        }
+    let diagramFileName;
+    try {
+        diagramFileName = await createDiagramFile(userId);
+    } catch {
+        jsonResponse(res, 500, {error: 'Не удалось создать диаграмму'});
+        return;
+    }
 
-        try {
-            const diagram = await createDiagram(userId, name, diagramFileName);
-            jsonResponse(res, 200, {diagram});
-        } catch {
-            jsonResponse(res, 500, {error: 'Ошибка при сохранении'});
-        }
-    },
+    try {
+        const diagram = await createDiagram(userId, name, diagramFileName);
+        jsonResponse(res, 200, {diagram});
+    } catch {
+        jsonResponse(res, 500, {error: 'Ошибка при сохранении'});
+    }
+},
 );
 
 router.delete('/delete/:diagramId', async (req, res) => {

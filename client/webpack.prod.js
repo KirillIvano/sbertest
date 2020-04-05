@@ -3,6 +3,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
 const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -25,6 +26,10 @@ const prod = {
             minify: true,
             template: path.resolve(__dirname, 'src', 'index.html'),
             filename: 'index.html',
+        }),
+        new webpack.DefinePlugin({
+            SERVER_ORIGIN: '"http://194.67.113.29:5000"',
+            IMAGE_HOST: '"http://194.67.113.29:5000/diagrams"',
         }),
     ],
     mode: 'production',

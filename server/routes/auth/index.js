@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     const csrf = createRandomKey();
     const {refreshJwt, accessJwt} = generateJwtPair(userId, csrf);
 
-    res.cookie('jwt', refreshJwt, {httpOnly: true, maxAge: COOKIE_EXPIRATION, overwrite: true});
+    res.cookie('jwt', refreshJwt, {httpOnly: false, maxAge: COOKIE_EXPIRATION, overwrite: true});
 
     jsonResponse(
         res,
@@ -93,7 +93,7 @@ router.post('/refreshTokens', async (req, res) => {
     const newCsrf = createRandomKey();
     const {accessJwt, refreshJwt} = generateJwtPair(id, newCsrf);
 
-    res.cookie('jwt', refreshJwt, {httpOnly: true, maxAge: COOKIE_EXPIRATION});
+    res.cookie('jwt', refreshJwt, {httpOnly: false, maxAge: COOKIE_EXPIRATION});
     jsonResponse(res, 200, {
         ok: true,
         accessJwt,

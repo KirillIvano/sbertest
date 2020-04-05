@@ -11,7 +11,7 @@ const doSignJWT = (expiryDate, params) =>
 
 const generateTemporaryJWT = id => {
     const expiry = new Date();
-    expiry.setSeconds(expiry.getMinutes() + 10);
+    expiry.setMinutes(expiry.getMinutes() + 10);
 
     return doSignJWT(expiry, {id});
 };

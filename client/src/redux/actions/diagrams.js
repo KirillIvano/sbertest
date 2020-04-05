@@ -23,7 +23,9 @@ import {
     RENAME_DIAGRAM_ERROR,
 } from '@/redux/names/diagrams';
 
-export const getDiagramsPreviewsAction = () => ({
+import {withAuthentication} from '@/redux/highOrderActions/withAuthentication';
+
+export const getDiagramsPreviewsAction = () => withAuthentication({
     type: GET_DIAGRAMS_PREVIEWS,
 });
 export const getDiagramsPreviewsSuccessAction = diagrams => ({
@@ -39,7 +41,7 @@ export const getDiagramsPreviewsErrorAction = error => ({
     },
 });
 
-export const deleteDiagramAction = diagramId => ({
+export const deleteDiagramAction = diagramId => withAuthentication({
     type: DELETE_DIAGRAM,
     payload: {
         diagramId,
@@ -58,7 +60,7 @@ export const deleteDiagramErrorAction = error => ({
     },
 });
 
-export const createDiagramAction = name => ({
+export const createDiagramAction = name => withAuthentication({
     type: CREATE_DIAGRAM,
     payload: {
         name,
@@ -77,7 +79,7 @@ export const createDiagramErrorAction = error => ({
     },
 });
 
-export const renameDiagramAction = (diagramId, name) => ({
+export const renameDiagramAction = (diagramId, name) => withAuthentication({
     type: RENAME_DIAGRAM,
     payload: {
         diagramId,
@@ -97,7 +99,7 @@ export const renameDiagramErrorAction = error => ({
     },
 });
 
-export const saveDiagramAction = (diagramId, xmlContent) => ({
+export const saveDiagramAction = (diagramId, xmlContent) => withAuthentication({
     type: SAVE_DIAGRAM,
     payload: {
         diagramId,
@@ -118,7 +120,7 @@ export const saveDiagramError = error => ({
     },
 });
 
-export const selectDiagramAction = diagramId => ({
+export const selectDiagramAction = diagramId => withAuthentication({
     type: SELECT_DIAGRAM,
     payload: {
         diagramId,

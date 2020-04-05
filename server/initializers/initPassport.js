@@ -2,7 +2,7 @@ const passport = require('passport');
 const {Strategy} = require('passport-http-bearer');
 
 const {verifyJwt} = require('~/helpers/jwt');
-const {getAdminById} = require('~/database/interactors/user');
+const {getUserById} = require('~/database/interactors/user');
 
 passport.use(new Strategy(
     async (token, done) => {
@@ -16,7 +16,7 @@ passport.use(new Strategy(
 
         const {id} = payload;
 
-        const user = await getAdminById(id);
+        const user = await getUserById(id);
 
         return done(null, user);
     },

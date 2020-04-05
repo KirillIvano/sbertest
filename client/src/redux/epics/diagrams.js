@@ -41,8 +41,8 @@ const getAllDiagramsEpic =
         action$.pipe(
             ofType(GET_DIAGRAMS_PREVIEWS),
             switchMap(
-                () => from(
-                    getDiagramsPreviews(),
+                ({accessToken}) => from(
+                    getDiagramsPreviews(accessToken),
                 ).pipe(
                     switchMap(({ok, error, diagrams}) => {
                         if (!ok) {
@@ -62,9 +62,9 @@ const deleteDiagramEpic =
             action$.pipe(
                 ofType(DELETE_DIAGRAM),
                 exhaustMap(
-                    ({payload: {diagramId}}) =>
+                    ({accessToken, payload: {diagramId}}) =>
                         from(
-                            deleteDiagram(diagramId),
+                            deleteDiagram(accessToken, diagramId),
                         ).pipe(
                             exhaustMap(({ok, error}) => {
                                 if (!ok) {
@@ -89,9 +89,9 @@ const createDiagramEpic =
         action$.pipe(
             ofType(CREATE_DIAGRAM),
             exhaustMap(
-                ({payload: {name}}) =>
+                ({accessToken, payload: {name}}) =>
                     from(
-                        createDiagram(name),
+                        createDiagram(accessToken, name),
                     ).pipe(
                         exhaustMap(({ok, error, diagram}) => {
                             if (!ok) {
@@ -115,9 +115,9 @@ const renameDiagramEpic =
         action$.pipe(
             ofType(RENAME_DIAGRAM),
             exhaustMap(
-                ({payload: {diagramId, name}}) =>
+                ({accessToken, payload: {diagramId, name}}) =>
                     from(
-                        renameDiagram(diagramId, name),
+                        renameDiagram(accessToken, diagramId, name),
                     ).pipe(
                         exhaustMap(({ok, error, diagram}) => {
                             if (!ok) {
@@ -141,8 +141,8 @@ const saveDiagramFileEpic =
         action$.pipe(
             ofType(SAVE_DIAGRAM),
             switchMap(
-                ({payload: {diagramId, xmlContent}}) => from(
-                    saveDiagram(diagramId, xmlContent),
+                ({accessToken, payload: {diagramId, xmlContent}}) => from(
+                    saveDiagram(accessToken, diagramId, xmlContent),
                 ).pipe(
                     switchMap(({ok, text}) => {
                         if (!ok) {
@@ -169,7 +169,7 @@ const getDiagramFileEpic =
         action$.pipe(
             ofType(SELECT_DIAGRAM),
             switchMap(
-                ({payload: {diagramId}}) => {
+                ({accessToken, payload: {diagramId}}) => {
                     const {diagram} = state$.value;
                     const {diagrams} = diagram;
 
@@ -189,7 +189,7 @@ const getDiagramFileEpic =
                     const {fileName} = selectedDiagram;
 
                     return from(
-                        getDiagramXml(fileName),
+                        getDiagramXml(accessToken, fileName),
                     ).pipe(
                         switchMap(({ok, text}) => {
                             if (!ok) {
