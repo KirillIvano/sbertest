@@ -11,6 +11,9 @@ import {
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
 
+    GET_DIAGRAM_FILE_SUCCESS,
+    GET_DIAGRAM_FILE_ERROR,
+
     SELECT_DIAGRAM,
 } from '@/redux/names/diagrams';
 
@@ -30,6 +33,10 @@ const INITIAL_STATE = {
     diagramCreatingInProgress: false,
     diagramCreatingSuccess: false,
     diagramCreatingError: null,
+
+    diagramFileGettingInProgress: false,
+    diagramFileGettingSuccess: false,
+    diagramFileGettingError: null,
 };
 
 export const diagramsReducer = (
@@ -124,11 +131,35 @@ export const diagramsReducer = (
         };
     }
 
+    case GET_DIAGRAM_FILE_SUCCESS: {
+        const {diagramId, xml} = payload;
+        const {diagrams} = state;
+
+        const diagramIndex = diagrams.findIndex(({id}) => diagramId === id);
+        diagrams[diagramIndex] = {...diagrams[diagramIndex], file: xml};
+
+        return {
+            ...state,
+            diagrams: [...diagrams],
+            diagramFileGettingInProgress: false,
+            diagramFileGettingSuccess: true,
+        };
+    }
+    case GET_DIAGRAM_FILE_ERROR: {
+        return {
+            diagramFileGettingInProgress: false,
+            diagramFileGettingError: true,
+        };
+    }
+
     case SELECT_DIAGRAM: {
         const {diagramId} = payload;
         return {
             ...state,
             selectedDiagramId: diagramId,
+            diagramFileGettingInProgress: true,
+            diagramFileGettingSuccess: false,
+            diagramFileGettingError: false,
         };
     }
     default: {

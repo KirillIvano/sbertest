@@ -11,13 +11,22 @@ import {
 
     createDiagramSuccessAction,
     createDiagramErrorAction,
+
+    getDiagramFileSuccessAction,
+    getDiagramFileErrorAction,
 } from '@/redux/actions/diagrams';
 import {
     GET_DIAGRAMS_PREVIEWS,
     DELETE_DIAGRAM,
     CREATE_DIAGRAM,
+    SELECT_DIAGRAM,
 } from '@/redux/names/diagrams';
-import {getDiagramsPreviews, deleteDiagram, createDiagram} from '@/services/diagrams';
+import {
+    getDiagramsPreviews,
+    deleteDiagram,
+    createDiagram,
+    getDiagramXml,
+} from '@/services/diagrams';
 import {showNormalMessage, showErrorMessage} from '@/redux/actions/messages';
 
 const getAllDiagramsEpic =
@@ -28,8 +37,8 @@ const getAllDiagramsEpic =
                 () => from(
                     getDiagramsPreviews(),
                 ).pipe(
-                    switchMap(({diagrams, error}) => {
-                        if (error) {
+                    switchMap(({ok, error, diagrams}) => {
+                        if (!ok) {
                             return of(getDiagramsPreviewsErrorAction(error));
                         }
 
@@ -38,6 +47,54 @@ const getAllDiagramsEpic =
                         );
                     }),
                 ),
+            ),
+        );
+
+const getDiagramFileEpic =
+    (action$, state$) =>
+        action$.pipe(
+            ofType(SELECT_DIAGRAM),
+            switchMap(
+                ({payload: {diagramId}}) => {
+                    const {diagram} = state$.value;
+                    const {diagrams} = diagram;
+
+                    const selectedDiagram = diagrams.find(
+                        ({id}) => diagramId === id,
+                    );
+
+                    if (!selectedDiagram) {
+                        return of(
+                            showErrorMessage(
+                                'Поиск диаграммы',
+                                'Диаграмма не найлена, обновите, пожалуйста, страницу',
+                            ),
+                        );
+                    }
+
+                    const {fileName} = selectedDiagram;
+
+                    return from(
+                        getDiagramXml(fileName),
+                    ).pipe(
+                        switchMap(({ok, text}) => {
+                            if (!ok) {
+                                return of(
+                                    showErrorMessage(
+                                        'Поиск диаграммы',
+                                        'Произошла ошибка, попробуйте открыть диаграмму позже',
+                                    ),
+                                    getDiagramFileErrorAction(),
+                                );
+                            }
+
+                            return of(
+                                showNormalMessage('Поиск диаграммы', 'Успешно загружено'),
+                                getDiagramFileSuccessAction(diagramId, text),
+                            );
+                        }),
+                    );
+                },
             ),
         );
 
@@ -50,8 +107,8 @@ const deleteDiagramEpic =
                     from(
                         deleteDiagram(diagramId),
                     ).pipe(
-                        exhaustMap(({error}) => {
-                            if (error) {
+                        exhaustMap(({ok, error}) => {
+                            if (!ok) {
                                 return of(
                                     deleteDiagramErrorAction(error),
                                     showErrorMessage('Удаление диаграммы', error),
@@ -77,8 +134,8 @@ action$ =>
                 from(
                     createDiagram(name),
                 ).pipe(
-                    exhaustMap(({error, diagram}) => {
-                        if (error) {
+                    exhaustMap(({ok, error, diagram}) => {
+                        if (!ok) {
                             return of(
                                 createDiagramErrorAction(error),
                                 showErrorMessage('Создание диаграммы', error),
@@ -96,6 +153,7 @@ action$ =>
 
 
 export default combineEpics(
+    getDiagramFileEpic,
     getAllDiagramsEpic,
     deleteDiagramEpic,
     createDiagramEpic,

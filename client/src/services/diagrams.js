@@ -1,7 +1,17 @@
+import {
+    enchanceJsonResponse,
+    enchanceTextResponse,
+} from '@/helpers/enchanceFetchResponse';
+
 export const getDiagramsPreviews = () =>
     fetch(
         `${SERVER_ORIGIN}/api/diagrams/previews`,
-    ).then(res => res.json());
+    ).then(enchanceJsonResponse);
+
+export const getDiagramXml = fileName =>
+    fetch(
+        `${SERVER_ORIGIN}/diagrams/${fileName}`,
+    ).then(enchanceTextResponse);
 
 export const deleteDiagram = diagramId =>
     fetch(
@@ -9,7 +19,7 @@ export const deleteDiagram = diagramId =>
         {
             method: 'DELETE',
         },
-    ).then(res => res.json());
+    ).then(enchanceJsonResponse);
 
 export const createDiagram = name =>
     fetch(
@@ -21,4 +31,4 @@ export const createDiagram = name =>
             },
             body: JSON.stringify({name}),
         },
-    ).then(res => res.json());
+    ).then(enchanceJsonResponse);

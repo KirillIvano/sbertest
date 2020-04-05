@@ -11,6 +11,9 @@ import {
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
 
+    GET_DIAGRAM_FILE_SUCCESS,
+    GET_DIAGRAM_FILE_ERROR,
+
     SELECT_DIAGRAM,
 } from '@/redux/names/diagrams';
 
@@ -66,6 +69,17 @@ export const createDiagramErrorAction = error => ({
     payload: {
         error,
     },
+});
+
+export const getDiagramFileSuccessAction = (diagramId, xml) => ({
+    type: GET_DIAGRAM_FILE_SUCCESS,
+    payload: {
+        diagramId,
+        xml,
+    },
+});
+export const getDiagramFileErrorAction = () => ({
+    type: GET_DIAGRAM_FILE_ERROR,
 });
 
 export const selectDiagramAction = diagramId => ({

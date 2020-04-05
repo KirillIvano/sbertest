@@ -10,10 +10,11 @@ import styles from './styles.less';
 
 const Editor = ({
     fileName,
+    file,
 
-    diagramFileLoadingInProgress,
-    diagramFileLoadingError,
-    diagramFileLoadingSuccess,
+    diagramFileGettingInProgress,
+    diagramFileGettingError,
+    diagramFileGettingSuccess,
 
     saveXml,
 }) => {
@@ -22,24 +23,24 @@ const Editor = ({
     const fileUrl = useMemo(() => getDiagramUrl(fileName), [fileName]);
 
     useEffect(() => {
-        if (diagramFileLoadingSuccess) {
+        if (diagramFileGettingSuccess) {
             setTimeout(() => {
                 const modeler = new Modeler({
                     container: modelerElementRef.current,
                 });
 
-                modeler.importXML(fileName);
+                modeler.importXML(file);
 
                 modelerRef.current = modeler;
             }, 0);
         }
-    }, [diagramFileLoadingSuccess]);
+    }, [diagramFileGettingSuccess]);
 
-    if (diagramFileLoadingInProgress) {
+    if (diagramFileGettingInProgress) {
         return <Preloader />;
     }
 
-    if (diagramFileLoadingError) {
+    if (diagramFileGettingError) {
         return 'Произошла ошибка';
     }
 

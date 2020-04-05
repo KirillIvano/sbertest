@@ -28,7 +28,7 @@ const DiagramsPanel = ({
 
     const sortedDiagrams = useMemo(
         () => [...diagrams].sort(
-            (a, b) => a < b ? 1 : -1,
+            (a, b) => (new Date(b.lastUpdate) - new Date(a.lastUpdate)),
         ),
         [diagrams],
     );
