@@ -64,7 +64,7 @@ const saveDiagramFileEpic =
                         if (!ok) {
                             return of(
                                 showErrorMessage(
-                                    'Поиск диаграммы',
+                                    'Сохранение диаграммы',
                                     'Произошла ошибка, попробуйте открыть диаграмму позже',
                                 ),
                                 getDiagramFileErrorAction(),
@@ -72,7 +72,7 @@ const saveDiagramFileEpic =
                         }
 
                         return of(
-                            showNormalMessage('Поиск диаграммы', 'Успешно загружено'),
+                            showNormalMessage('Сохранение диаграммы', 'Успешно сохранено'),
                             getDiagramFileSuccessAction(diagramId, text),
                         );
                     }),

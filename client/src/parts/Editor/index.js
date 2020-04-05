@@ -34,6 +34,19 @@ const Editor = ({
 
                 modelerRef.current = modeler;
             }, 0);
+        } else {
+            if (modelerRef.current) {
+                modelerRef.current.saveXML(
+                    {format: true},
+                    (err, xml) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        saveXml(diagramId, xml);
+                    },
+                );
+            }
         }
     }, [diagramFileGettingSuccess]);
 
