@@ -6,6 +6,7 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const prod = {
     entry: './src/index.js',
@@ -31,6 +32,9 @@ const prod = {
             SERVER_ORIGIN: '"http://194.67.113.29:5000"',
             IMAGE_HOST: '"http://194.67.113.29:5000/diagrams"',
         }),
+        new CopyWebpackPlugin([
+            { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },
+        ]),
     ],
     mode: 'production',
     watch: true,

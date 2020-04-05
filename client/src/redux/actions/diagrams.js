@@ -106,14 +106,10 @@ export const saveDiagramAction = (diagramId, xmlContent) => withAuthentication({
         xmlContent,
     },
 });
-export const saveDiagramSuccessAction = (diagramId, xmlContent) => ({
+export const saveDiagramSuccessAction = () => ({
     type: SAVE_DIAGRAM_SUCCESS,
-    payload: {
-        diagramId,
-        xmlContent,
-    },
 });
-export const saveDiagramError = error => ({
+export const saveDiagramErrorAction = error => ({
     type: SAVE_DIAGRAM_ERROR,
     payload: {
         error,

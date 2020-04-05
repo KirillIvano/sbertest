@@ -52,7 +52,7 @@ const DiagramsPanel = ({
     if (diagramsGettingError) {
         return (
             <div className={styles.diagramsPanel}>
-                {'Ошибка, вернитесь позже'}
+                {'Ошибка, вернитесь, пожалуйста, позже'}
             </div>
         );
     }

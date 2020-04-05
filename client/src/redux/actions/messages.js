@@ -24,6 +24,8 @@ const showMessage = (
 export const showErrorMessage = (title, content) => showMessage(title, content, 'error');
 export const showNormalMessage = (title, content) => showMessage(title, content, 'normal');
 
+export const showUnknownErrorMessage = () => showMessage('Неизвестная ошибка', 'Попробуйте снова', 'error');
+
 export const removeLastMessage = () => ({
     type: POP_MESSAGE,
 });

@@ -1,5 +1,5 @@
 import {combineEpics, ofType} from 'redux-observable';
-import {switchMap, exhaustMap} from 'rxjs/operators';
+import {switchMap, exhaustMap, mergeMap, catchError} from 'rxjs/operators';
 import {from, of} from 'rxjs';
 
 import {
@@ -17,6 +17,9 @@ import {
 
     renameDiagramErrorAction,
     renameDiagramSuccessAction,
+
+    saveDiagramErrorAction,
+    saveDiagramSuccessAction,
 } from '@/redux/actions/diagrams';
 import {
     GET_DIAGRAMS_PREVIEWS,
@@ -34,7 +37,11 @@ import {
     saveDiagram,
     renameDiagram,
 } from '@/services/diagrams';
-import {showNormalMessage, showErrorMessage} from '@/redux/actions/messages';
+import {
+    showNormalMessage,
+    showErrorMessage,
+    showUnknownErrorMessage,
+} from '@/redux/actions/messages';
 
 const getAllDiagramsEpic =
     action$ =>
@@ -55,33 +62,43 @@ const getAllDiagramsEpic =
                     }),
                 ),
             ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
+                ),
+            ),
         );
 
 const deleteDiagramEpic =
-        action$ =>
-            action$.pipe(
-                ofType(DELETE_DIAGRAM),
-                exhaustMap(
-                    ({accessToken, payload: {diagramId}}) =>
-                        from(
-                            deleteDiagram(accessToken, diagramId),
-                        ).pipe(
-                            exhaustMap(({ok, error}) => {
-                                if (!ok) {
-                                    return of(
-                                        deleteDiagramErrorAction(error),
-                                        showErrorMessage('Удаление диаграммы', error),
-                                    );
-                                }
-
+    action$ =>
+        action$.pipe(
+            ofType(DELETE_DIAGRAM),
+            exhaustMap(
+                ({accessToken, payload: {diagramId}}) =>
+                    from(
+                        deleteDiagram(accessToken, diagramId),
+                    ).pipe(
+                        exhaustMap(({ok, error}) => {
+                            if (!ok) {
                                 return of(
-                                    deleteDiagramSuccessAction(diagramId),
-                                    showNormalMessage('Удаление диаграммы', 'Успешно удалено'),
+                                    deleteDiagramErrorAction(error),
+                                    showErrorMessage('Удаление диаграммы', error),
                                 );
-                            }),
-                        ),
+                            }
+
+                            return of(
+                                deleteDiagramSuccessAction(diagramId),
+                                showNormalMessage('Удаление диаграммы', 'Успешно удалено'),
+                            );
+                        }),
+                    ),
+            ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
                 ),
-            );
+            ),
+        );
 
 
 const createDiagramEpic =
@@ -107,6 +124,11 @@ const createDiagramEpic =
                             );
                         }),
                     ),
+            ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
+                ),
             ),
         );
 
@@ -134,32 +156,42 @@ const renameDiagramEpic =
                         }),
                     ),
             ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
+                ),
+            ),
         );
 
 const saveDiagramFileEpic =
     action$ =>
         action$.pipe(
             ofType(SAVE_DIAGRAM),
-            switchMap(
+            exhaustMap(
                 ({accessToken, payload: {diagramId, xmlContent}}) => from(
                     saveDiagram(accessToken, diagramId, xmlContent),
                 ).pipe(
-                    switchMap(({ok, text}) => {
+                    switchMap(({ok, error}) => {
                         if (!ok) {
                             return of(
                                 showErrorMessage(
                                     'Сохранение диаграммы',
                                     'Произошла ошибка, попробуйте открыть диаграмму позже',
                                 ),
-                                getDiagramFileErrorAction(),
+                                saveDiagramErrorAction(error),
                             );
                         }
 
                         return of(
                             showNormalMessage('Сохранение диаграммы', 'Успешно сохранено'),
-                            getDiagramFileSuccessAction(diagramId, text),
+                            saveDiagramSuccessAction(),
                         );
                     }),
+                ),
+            ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
                 ),
             ),
         );
@@ -168,7 +200,7 @@ const getDiagramFileEpic =
     (action$, state$) =>
         action$.pipe(
             ofType(SELECT_DIAGRAM),
-            switchMap(
+            mergeMap(
                 ({accessToken, payload: {diagramId}}) => {
                     const {diagram} = state$.value;
                     const {diagrams} = diagram;
@@ -191,7 +223,7 @@ const getDiagramFileEpic =
                     return from(
                         getDiagramXml(accessToken, fileName),
                     ).pipe(
-                        switchMap(({ok, text}) => {
+                        mergeMap(({ok, text}) => {
                             if (!ok) {
                                 return of(
                                     showErrorMessage(
@@ -209,6 +241,11 @@ const getDiagramFileEpic =
                         }),
                     );
                 },
+            ),
+            catchError(
+                () => of(
+                    showUnknownErrorMessage(),
+                ),
             ),
         );
 

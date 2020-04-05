@@ -7,7 +7,6 @@ import {withLoggingIn} from './containers/withLoggingIn';
 
 const AuthModal = ({
     loginInProgress,
-    loginSuccess,
     loginError,
     isOpen,
 
@@ -50,9 +49,11 @@ const AuthModal = ({
                 <Button
                     type={'submit'}
                     className={styles.button}
+                    disabled={loginInProgress}
                 >
                     {'Подтвердить'}
                 </Button>
+                <p className={styles.errorMessage}>{loginError}</p>
             </form>
         </Modal>
     );
