@@ -18,6 +18,9 @@ import {
     SAVE_DIAGRAM,
     SAVE_DIAGRAM_SUCCESS,
     SAVE_DIAGRAM_ERROR,
+    RENAME_DIAGRAM,
+    RENAME_DIAGRAM_ERROR,
+    RENAME_DIAGRAM_SUCCESS,
 } from '@/redux/names/diagrams';
 
 const INITIAL_STATE = {
@@ -36,6 +39,10 @@ const INITIAL_STATE = {
     diagramCreatingInProgress: false,
     diagramCreatingSuccess: false,
     diagramCreatingError: null,
+
+    diagramRenamingInProgress: false,
+    diagramRenamingSuccess: false,
+    diagramRenamingError: null,
 
     diagramFileGettingInProgress: false,
     diagramFileGettingSuccess: false,
@@ -136,6 +143,38 @@ export const diagramsReducer = (
             diagramCreatingInProgress: false,
             diagramCreatingError: error,
         };
+    }
+
+    case RENAME_DIAGRAM: {
+        return {
+            ...state,
+            diagramRenamingInProgress: true,
+            diagramRenamingSuccess: false,
+            diagramRenamingError: null,
+        };
+    }
+    case RENAME_DIAGRAM_SUCCESS: {
+        const {diagram} = payload;
+        const diagrams = [...state.diagrams];
+        const diagramIndex = diagrams.findIndex(({id}) => id === diagram.id);
+        diagrams[diagramIndex] = diagram;
+
+        return {
+            ...state,
+            diagrams,
+            diagramRenamingInProgress: false,
+            diagramRenamingSuccess: true,
+        };
+    }
+    case RENAME_DIAGRAM_ERROR: {
+        const {error} = payload;
+
+        return {
+            ...state,
+            diagramRenamingInProgress: false,
+            diagramRenamingError: error,
+        };
+
     }
 
     case SELECT_DIAGRAM: {

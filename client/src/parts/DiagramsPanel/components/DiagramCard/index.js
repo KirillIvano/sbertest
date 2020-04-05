@@ -6,12 +6,15 @@ import {Button} from '@/components';
 import styles from './styles.less';
 
 const DiagramControls = ({
-    // handleRename,
+    handleRename,
     handleSelect,
     handleDelete,
 }) => (
     <div className={styles.cardControls}>
-        <Button className={styles.button}>
+        <Button
+            className={styles.button}
+            onClick={handleRename}
+        >
             {'Переименовать'}
         </Button>
         <Button
@@ -35,6 +38,7 @@ const DiagramCard = ({
     lastUpdate,
     handleSelect,
     handleDelete,
+    handleRename,
 }) => {
     const date = useMemo(() => formatDate(lastUpdate), [lastUpdate]);
 
@@ -51,6 +55,7 @@ const DiagramCard = ({
             <DiagramControls
                 handleDelete={handleDelete}
                 handleSelect={handleSelect}
+                handleRename={handleRename}
             />
         </div>
     );

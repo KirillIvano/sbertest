@@ -14,11 +14,15 @@ import {
 
     getDiagramFileSuccessAction,
     getDiagramFileErrorAction,
+
+    renameDiagramErrorAction,
+    renameDiagramSuccessAction,
 } from '@/redux/actions/diagrams';
 import {
     GET_DIAGRAMS_PREVIEWS,
     DELETE_DIAGRAM,
     CREATE_DIAGRAM,
+    RENAME_DIAGRAM,
     SELECT_DIAGRAM,
     SAVE_DIAGRAM,
 } from '@/redux/names/diagrams';
@@ -28,6 +32,7 @@ import {
     createDiagram,
     getDiagramXml,
     saveDiagram,
+    renameDiagram,
 } from '@/services/diagrams';
 import {showNormalMessage, showErrorMessage} from '@/redux/actions/messages';
 
@@ -49,6 +54,85 @@ const getAllDiagramsEpic =
                         );
                     }),
                 ),
+            ),
+        );
+
+const deleteDiagramEpic =
+        action$ =>
+            action$.pipe(
+                ofType(DELETE_DIAGRAM),
+                exhaustMap(
+                    ({payload: {diagramId}}) =>
+                        from(
+                            deleteDiagram(diagramId),
+                        ).pipe(
+                            exhaustMap(({ok, error}) => {
+                                if (!ok) {
+                                    return of(
+                                        deleteDiagramErrorAction(error),
+                                        showErrorMessage('Удаление диаграммы', error),
+                                    );
+                                }
+
+                                return of(
+                                    deleteDiagramSuccessAction(diagramId),
+                                    showNormalMessage('Удаление диаграммы', 'Успешно удалено'),
+                                );
+                            }),
+                        ),
+                ),
+            );
+
+
+const createDiagramEpic =
+    action$ =>
+        action$.pipe(
+            ofType(CREATE_DIAGRAM),
+            exhaustMap(
+                ({payload: {name}}) =>
+                    from(
+                        createDiagram(name),
+                    ).pipe(
+                        exhaustMap(({ok, error, diagram}) => {
+                            if (!ok) {
+                                return of(
+                                    createDiagramErrorAction(error),
+                                    showErrorMessage('Создание диаграммы', error),
+                                );
+                            }
+
+                            return of(
+                                createDiagramSuccessAction(diagram),
+                                showNormalMessage('Создание диаграммы', 'Успешно создано'),
+                            );
+                        }),
+                    ),
+            ),
+        );
+
+const renameDiagramEpic =
+    action$ =>
+        action$.pipe(
+            ofType(RENAME_DIAGRAM),
+            exhaustMap(
+                ({payload: {diagramId, name}}) =>
+                    from(
+                        renameDiagram(diagramId, name),
+                    ).pipe(
+                        exhaustMap(({ok, error, diagram}) => {
+                            if (!ok) {
+                                return of(
+                                    renameDiagramErrorAction(error),
+                                    showErrorMessage('Переименование диаграммы', error),
+                                );
+                            }
+
+                            return of(
+                                renameDiagramSuccessAction(diagram),
+                                showNormalMessage('Переименование диаграммы', 'Успешно переименовано'),
+                            );
+                        }),
+                    ),
             ),
         );
 
@@ -128,64 +212,13 @@ const getDiagramFileEpic =
             ),
         );
 
-const deleteDiagramEpic =
-    action$ =>
-        action$.pipe(
-            ofType(DELETE_DIAGRAM),
-            exhaustMap(
-                ({payload: {diagramId}}) =>
-                    from(
-                        deleteDiagram(diagramId),
-                    ).pipe(
-                        exhaustMap(({ok, error}) => {
-                            if (!ok) {
-                                return of(
-                                    deleteDiagramErrorAction(error),
-                                    showErrorMessage('Удаление диаграммы', error),
-                                );
-                            }
-
-                            return of(
-                                deleteDiagramSuccessAction(diagramId),
-                                showNormalMessage('Удаление диаграммы', 'Успешно удалено'),
-                            );
-                        }),
-                    ),
-            ),
-        );
-
-
-const createDiagramEpic =
-    action$ =>
-        action$.pipe(
-            ofType(CREATE_DIAGRAM),
-            exhaustMap(
-                ({payload: {name}}) =>
-                    from(
-                        createDiagram(name),
-                    ).pipe(
-                        exhaustMap(({ok, error, diagram}) => {
-                            if (!ok) {
-                                return of(
-                                    createDiagramErrorAction(error),
-                                    showErrorMessage('Создание диаграммы', error),
-                                );
-                            }
-
-                            return of(
-                                createDiagramSuccessAction(diagram),
-                                showNormalMessage('Создание диаграммы', 'Успешно создано'),
-                            );
-                        }),
-                    ),
-            ),
-        );
 
 
 export default combineEpics(
     getAllDiagramsEpic,
-    saveDiagramFileEpic,
-    getDiagramFileEpic,
     deleteDiagramEpic,
     createDiagramEpic,
+    renameDiagramEpic,
+    saveDiagramFileEpic,
+    getDiagramFileEpic,
 );

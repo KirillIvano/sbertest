@@ -18,6 +18,9 @@ import {
     SELECT_DIAGRAM,
     GET_DIAGRAM_FILE_SUCCESS,
     GET_DIAGRAM_FILE_ERROR,
+    RENAME_DIAGRAM,
+    RENAME_DIAGRAM_SUCCESS,
+    RENAME_DIAGRAM_ERROR,
 } from '@/redux/names/diagrams';
 
 export const getDiagramsPreviewsAction = () => ({
@@ -69,6 +72,26 @@ export const createDiagramSuccessAction = diagram => ({
 });
 export const createDiagramErrorAction = error => ({
     type: CREATE_DIAGRAM_ERROR,
+    payload: {
+        error,
+    },
+});
+
+export const renameDiagramAction = (diagramId, name) => ({
+    type: RENAME_DIAGRAM,
+    payload: {
+        diagramId,
+        name,
+    },
+});
+export const renameDiagramSuccessAction = diagram => ({
+    type: RENAME_DIAGRAM_SUCCESS,
+    payload: {
+        diagram,
+    },
+});
+export const renameDiagramErrorAction = error => ({
+    type: RENAME_DIAGRAM_ERROR,
     payload: {
         error,
     },

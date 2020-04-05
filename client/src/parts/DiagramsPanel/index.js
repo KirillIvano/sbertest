@@ -4,9 +4,10 @@ import classnames from 'classnames';
 import {Button, CloseIcon} from '@/components';
 import {useModalState} from '@/hooks/useModalState';
 
-import {DeleteModal, CreateModal, DiagramCard} from './components';
+import {DeleteModal, CreateModal, RenameModal, DiagramCard} from './components';
 import {withDiagramsPreviews} from './containers/withDiagramsPreviews';
 import {useDeleteModalState} from './hooks/useDeleteModalState';
+import {useUpdateModalState} from './hooks/useUpdateModalState';
 import styles from './styles.less';
 
 const DiagramsPanel = ({
@@ -39,6 +40,13 @@ const DiagramsPanel = ({
         closeDeleteModal,
         deletedId,
     } = useDeleteModalState(false);
+    const {
+        isUpdateModalOpened,
+        openUpdateModal,
+        closeUpdateModal,
+        updatedId,
+    } = useUpdateModalState(false);
+
     const [isCreateModalOpened, openCreateModal, closeCreateModal] = useModalState(false);
 
     if (diagramsGettingError) {
@@ -83,6 +91,7 @@ const DiagramsPanel = ({
                                 selectDiagram(id);
                                 close();
                             }}
+                            handleRename={() => openUpdateModal(id)}
                             key={id}
                             {...{name, lastUpdate}}
                         />
@@ -94,6 +103,11 @@ const DiagramsPanel = ({
                 isOpen={isDeleteModalOpened}
                 handleClose={closeDeleteModal}
                 deletedId={deletedId}
+            />
+            <RenameModal
+                isOpen={isUpdateModalOpened}
+                handleClose={closeUpdateModal}
+                updatedId={updatedId}
             />
             <CreateModal
                 isOpen={isCreateModalOpened}
