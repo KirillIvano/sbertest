@@ -1,5 +1,7 @@
 import {connect} from 'react-redux';
 
+import {saveDiagramAction} from '@/redux/actions/diagrams';
+
 const mapStateToProps = ({diagram}) => {
     const {
         diagrams,
@@ -14,11 +16,14 @@ const mapStateToProps = ({diagram}) => {
     const {
         fileName,
         file,
+        name,
     } = selectedDiagram;
 
     return {
         fileName,
+        diagramName: name,
         file,
+        diagramId: selectedDiagramId,
 
         diagramFileGettingInProgress,
         diagramFileGettingSuccess,
@@ -26,4 +31,8 @@ const mapStateToProps = ({diagram}) => {
     };
 };
 
-export const withEditorProps = connect(mapStateToProps);
+const mapDispatchToProps = dispatch => ({
+    saveXml: (diagramId, xmlContent) => dispatch(saveDiagramAction(diagramId, xmlContent)),
+});
+
+export const withEditorProps = connect(mapStateToProps, mapDispatchToProps);

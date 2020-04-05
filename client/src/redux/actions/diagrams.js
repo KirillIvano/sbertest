@@ -11,10 +11,13 @@ import {
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
 
-    GET_DIAGRAM_FILE_SUCCESS,
-    GET_DIAGRAM_FILE_ERROR,
+    SAVE_DIAGRAM,
+    SAVE_DIAGRAM_SUCCESS,
+    SAVE_DIAGRAM_ERROR,
 
     SELECT_DIAGRAM,
+    GET_DIAGRAM_FILE_SUCCESS,
+    GET_DIAGRAM_FILE_ERROR,
 } from '@/redux/names/diagrams';
 
 export const getDiagramsPreviewsAction = () => ({
@@ -71,6 +74,33 @@ export const createDiagramErrorAction = error => ({
     },
 });
 
+export const saveDiagramAction = (diagramId, xmlContent) => ({
+    type: SAVE_DIAGRAM,
+    payload: {
+        diagramId,
+        xmlContent,
+    },
+});
+export const saveDiagramSuccessAction = (diagramId, xmlContent) => ({
+    type: SAVE_DIAGRAM_SUCCESS,
+    payload: {
+        diagramId,
+        xmlContent,
+    },
+});
+export const saveDiagramError = error => ({
+    type: SAVE_DIAGRAM_ERROR,
+    payload: {
+        error,
+    },
+});
+
+export const selectDiagramAction = diagramId => ({
+    type: SELECT_DIAGRAM,
+    payload: {
+        diagramId,
+    },
+});
 export const getDiagramFileSuccessAction = (diagramId, xml) => ({
     type: GET_DIAGRAM_FILE_SUCCESS,
     payload: {
@@ -80,11 +110,4 @@ export const getDiagramFileSuccessAction = (diagramId, xml) => ({
 });
 export const getDiagramFileErrorAction = () => ({
     type: GET_DIAGRAM_FILE_ERROR,
-});
-
-export const selectDiagramAction = diagramId => ({
-    type: SELECT_DIAGRAM,
-    payload: {
-        diagramId,
-    },
 });

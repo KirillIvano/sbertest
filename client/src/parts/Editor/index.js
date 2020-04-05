@@ -1,16 +1,18 @@
-import React, {useEffect, useRef, useMemo} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Modeler from 'bpmn-js/lib/Modeler';
 import classnames from 'classnames';
 
-import {getDiagramUrl} from '@/helpers/getDiagramUrl';
+import {downloadDiagram} from '@/helpers/downloadXml';
 
 import {EditorControls, Preview, Preloader} from './components';
 import {withEditorProps} from './containers/withEditorProps';
 import styles from './styles.less';
 
 const Editor = ({
+    diagramName,
     fileName,
     file,
+    diagramId,
 
     diagramFileGettingInProgress,
     diagramFileGettingError,
@@ -20,7 +22,6 @@ const Editor = ({
 }) => {
     const modelerElementRef = useRef();
     const modelerRef = useRef();
-    const fileUrl = useMemo(() => getDiagramUrl(fileName), [fileName]);
 
     useEffect(() => {
         if (diagramFileGettingSuccess) {
@@ -39,21 +40,47 @@ const Editor = ({
     if (diagramFileGettingInProgress) {
         return <Preloader />;
     }
-
     if (diagramFileGettingError) {
         return 'Произошла ошибка';
     }
-
     if (!fileName) {
         return <Preview />;
     }
 
+    const handleSave = () => {
+        modelerRef.current.saveXML(
+            {format: true},
+            (err, xml) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                saveXml(diagramId, xml);
+            },
+        );
+    };
+
+    const handleDownload = () => {
+        modelerRef.current.saveXML(
+            {format: true},
+            (err, xml) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                downloadDiagram(diagramName, xml);
+            },
+        );
+    };
+
     return (
-        <div ref={modelerElementRef} className={classnames(styles.editor)}>
-            <EditorControls
-                downloadAddress={fileUrl}
-                saveHandler={saveXml}
-            />
+        <div className={styles.editorContainer}>
+            <div ref={modelerElementRef} className={classnames(styles.editor)}>
+                <EditorControls
+                    handleDownload={handleDownload}
+                    handleSave={handleSave}
+                />
+            </div>
         </div>
     );
 };

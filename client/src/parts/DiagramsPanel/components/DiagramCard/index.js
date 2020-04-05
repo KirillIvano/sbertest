@@ -6,7 +6,6 @@ import {Button} from '@/components';
 import styles from './styles.less';
 
 const DiagramControls = ({
-    disabled=false,
     // handleRename,
     handleSelect,
     handleDelete,

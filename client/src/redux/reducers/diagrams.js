@@ -11,10 +11,13 @@ import {
     CREATE_DIAGRAM_SUCCESS,
     CREATE_DIAGRAM_ERROR,
 
+    SELECT_DIAGRAM,
     GET_DIAGRAM_FILE_SUCCESS,
     GET_DIAGRAM_FILE_ERROR,
 
-    SELECT_DIAGRAM,
+    SAVE_DIAGRAM,
+    SAVE_DIAGRAM_SUCCESS,
+    SAVE_DIAGRAM_ERROR,
 } from '@/redux/names/diagrams';
 
 const INITIAL_STATE = {
@@ -37,6 +40,10 @@ const INITIAL_STATE = {
     diagramFileGettingInProgress: false,
     diagramFileGettingSuccess: false,
     diagramFileGettingError: null,
+
+    diagramSavingInProgress: false,
+    diagramSavingSuccess: false,
+    diagramSavingError: null,
 };
 
 export const diagramsReducer = (
@@ -131,6 +138,16 @@ export const diagramsReducer = (
         };
     }
 
+    case SELECT_DIAGRAM: {
+        const {diagramId} = payload;
+        return {
+            ...state,
+            selectedDiagramId: diagramId,
+            diagramFileGettingInProgress: true,
+            diagramFileGettingSuccess: false,
+            diagramFileGettingError: false,
+        };
+    }
     case GET_DIAGRAM_FILE_SUCCESS: {
         const {diagramId, xml} = payload;
         const {diagrams} = state;
@@ -147,21 +164,36 @@ export const diagramsReducer = (
     }
     case GET_DIAGRAM_FILE_ERROR: {
         return {
+            ...state,
             diagramFileGettingInProgress: false,
             diagramFileGettingError: true,
         };
     }
 
-    case SELECT_DIAGRAM: {
-        const {diagramId} = payload;
+    case SAVE_DIAGRAM: {
         return {
             ...state,
-            selectedDiagramId: diagramId,
-            diagramFileGettingInProgress: true,
-            diagramFileGettingSuccess: false,
-            diagramFileGettingError: false,
+            diagramSavingInProgress: true,
+            diagramSavingSuccess: false,
+            diagramSavingError: null,
         };
     }
+    case SAVE_DIAGRAM_SUCCESS: {
+        return {
+            ...state,
+            diagramSavingInProgress: false,
+            diagramSavingSuccess: true,
+        };
+    }
+    case SAVE_DIAGRAM_ERROR: {
+        const {error} = payload;
+        return {
+            ...state,
+            diagramSavingInProgress: true,
+            diagramSavingError: error,
+        };
+    }
+
     default: {
         return state;
     }

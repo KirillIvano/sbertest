@@ -13,6 +13,18 @@ export const getDiagramXml = fileName =>
         `${SERVER_ORIGIN}/diagrams/${fileName}`,
     ).then(enchanceTextResponse);
 
+export const saveDiagram = (diagramId, xml) =>
+    fetch(
+        `${SERVER_ORIGIN}/api/diagrams/save/${diagramId}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({xml}),
+            method: 'PUT',
+        },
+    ).then(enchanceJsonResponse);
+
 export const deleteDiagram = diagramId =>
     fetch(
         `${SERVER_ORIGIN}/api/diagrams/delete/${diagramId}`,
