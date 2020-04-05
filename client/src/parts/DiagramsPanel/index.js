@@ -78,10 +78,13 @@ const DiagramsPanel = ({
                         lastUpdate,
                     }) => (
                         <DiagramCard
-                            handleDelete={openDeleteModal}
-                            handleSelect={selectDiagram}
+                            handleDelete={() => openDeleteModal(id)}
+                            handleSelect={() => {
+                                selectDiagram(id);
+                                close();
+                            }}
                             key={id}
-                            {...{id, name, lastUpdate}}
+                            {...{name, lastUpdate}}
                         />
                     ),
                 )

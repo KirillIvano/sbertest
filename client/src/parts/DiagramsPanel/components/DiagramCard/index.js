@@ -32,7 +32,6 @@ const DiagramControls = ({
 
 const DiagramCard = ({
     name,
-    id,
     lastUpdate,
     handleSelect,
     handleDelete,
@@ -50,8 +49,8 @@ const DiagramCard = ({
                 </p>
             </div>
             <DiagramControls
-                handleDelete={() => handleDelete(id)}
-                handleSelect={() => handleSelect(id)}
+                handleDelete={handleDelete}
+                handleSelect={handleSelect}
             />
         </div>
     );
