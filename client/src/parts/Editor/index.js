@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import {downloadDiagram} from '@/helpers/downloadXml';
 
-import {EditorControls, Preview, Preloader} from './components';
+import {EditorControls, Preview, Preloader, ErrorView} from './components';
 import {withEditorProps} from './containers/withEditorProps';
 import styles from './styles.less';
 
@@ -42,7 +42,7 @@ const Editor = ({
         return <Preloader />;
     }
     if (diagramFileGettingError) {
-        return 'Произошла ошибка';
+        return <ErrorView />;
     }
     if (!fileName) {
         return <Preview />;
