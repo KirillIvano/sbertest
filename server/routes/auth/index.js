@@ -3,26 +3,9 @@ const router = require('express').Router();
 const {jsonResponse} = require('~/helpers/jres');
 const {createRandomKey} = require('~/helpers/createRandomKey');
 const {generateJwtPair, verifyJwt} = require('~/helpers/jwt');
-const {
-    createUser,
-    loginUser,
-} = require('~/database/interactors/user');
+const {loginUser} = require('~/database/interactors/user');
 
 const COOKIE_EXPIRATION = 30 * 24 * 60 * 60 * 100;
-
-router.post('/register', async (req, res) => {
-    const {name, password} = req.body;
-
-    await createUser(name, password);
-
-    jsonResponse(
-        res,
-        200,
-        {
-            ok: true,
-        },
-    );
-});
 
 router.post('/login', async (req, res) => {
     const {name, password} = req.body;

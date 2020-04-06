@@ -2,15 +2,16 @@ import React from 'react';
 import styles from './styles.less';
 
 import {Button} from '@/components';
+import {withSavingProgressInfo} from './containers/withSavingProcessInfo';
 
 const EditorControls = ({
-    disabled=false,
     handleDownload,
     handleSave,
+
+    isDiagramSavingInProgress,
 }) => (
     <div className={styles.editorControls}>
         <Button
-            disabled={disabled}
             onClick={handleDownload}
             styling="normal"
             className={styles.button}
@@ -18,7 +19,7 @@ const EditorControls = ({
             {'Скачать'}
         </Button>
         <Button
-            disabled={disabled}
+            disabled={isDiagramSavingInProgress}
             onClick={handleSave}
             styling="normal"
             className={styles.button}
@@ -28,4 +29,4 @@ const EditorControls = ({
     </div>
 );
 
-export default EditorControls;
+export default withSavingProgressInfo(EditorControls);

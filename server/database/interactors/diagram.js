@@ -17,6 +17,9 @@ const getDiagramByIds = async (userId, diagramId) => {
     const diagram = diagrams.find(({id}) => id === diagramId);
     if (!diagram) return null;
 
+    diagram.lastUpdate = Date.now();
+    await user.save();
+
     return clientifyDiagram(diagram);
 };
 

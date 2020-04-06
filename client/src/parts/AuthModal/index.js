@@ -14,10 +14,17 @@ const AuthModal = ({
 }) => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [validationError, setValidationError] = useState('');
 
     const handleSubmit = e => {
         e.preventDefault(login);
 
+        if (!name || !password) {
+            setValidationError('Имя и пароль обязательны');
+            return;
+        }
+
+        setValidationError('');
         login({name, password});
     };
 
@@ -53,7 +60,17 @@ const AuthModal = ({
                 >
                     {'Подтвердить'}
                 </Button>
-                <p className={styles.errorMessage}>{loginError}</p>
+
+                {loginError &&
+                <p className={styles.errorMessage}>
+                    {loginError}
+                </p>
+                }
+                {validationError &&
+                <p className={styles.errorMessage}>
+                    {validationError}
+                </p>
+                }
             </form>
         </Modal>
     );

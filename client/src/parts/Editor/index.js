@@ -19,6 +19,7 @@ const Editor = ({
     diagramFileGettingSuccess,
 
     saveXml,
+    showXmlSavingError,
 }) => {
     const modelerElementRef = useRef();
     const modelerRef = useRef();
@@ -52,7 +53,7 @@ const Editor = ({
             {format: true},
             (err, xml) => {
                 if (err) {
-                    console.log(err);
+                    showXmlSavingError();
                     return;
                 }
                 saveXml(diagramId, xml);
@@ -65,7 +66,7 @@ const Editor = ({
             {format: true},
             (err, xml) => {
                 if (err) {
-                    console.log(err);
+                    showXmlSavingError();
                     return;
                 }
                 downloadDiagram(diagramName, xml);

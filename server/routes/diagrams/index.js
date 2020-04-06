@@ -105,24 +105,22 @@ router.put('/rename/:diagramId', async (req, res) => {
     }
 });
 
-router.put(
-    '/save/:diagramId',
-    async (req, res) => {
-        const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
-        const {diagramId} = req.params;
-        const {xml} = req.body;
+router.put('/save/:diagramId', async (req, res) => {
+    const {id: userId} = req.user || {id: '5e8868b4c9f6733d4c73eaf4'};
+    const {diagramId} = req.params;
+    const {xml} = req.body;
 
-        const diagram = await getDiagramByIds(userId, diagramId);
-        if (!diagram) {
-            jsonResponse(res, 404, {error: 'Диаграмма не найдена'});
-            return;
-        }
+    const diagram = await getDiagramByIds(userId, diagramId);
+    if (!diagram) {
+        jsonResponse(res, 404, {error: 'Диаграмма не найдена'});
+        return;
+    }
 
-        const {fileName} = diagram;
-        await updateDiagramFile(fileName, xml);
+    const {fileName} = diagram;
+    await updateDiagramFile(fileName, xml);
 
-        jsonResponse(res, 200);
-    },
+    jsonResponse(res, 200);
+},
 );
 
 module.exports = router;
