@@ -8,7 +8,7 @@ import {CloseIcon} from '@/components';
 
 const Modal = ({
     className,
-    width=600,
+    width,
     closeable=true,
 
     children,

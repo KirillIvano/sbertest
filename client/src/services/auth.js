@@ -1,3 +1,7 @@
+import {
+    enchanceJsonResponse,
+} from '@/helpers/enchanceFetchResponse';
+
 export const refreshTokens = body => fetch(
     `${SERVER_ORIGIN}/api/auth/refreshTokens`,
     {
@@ -8,7 +12,7 @@ export const refreshTokens = body => fetch(
         },
         body: JSON.stringify(body),
     },
-).then(response => response.json());
+).then(enchanceJsonResponse);
 
 export const saveToken = refreshJwt => {
     localStorage.setItem('refreshJwt', refreshJwt);
@@ -25,4 +29,4 @@ export const login = body => fetch(
         },
         method: 'POST',
         credentials: 'include',
-    }).then(response => response.json());
+    }).then(enchanceJsonResponse);

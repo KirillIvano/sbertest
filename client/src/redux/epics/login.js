@@ -1,7 +1,7 @@
 import {ofType} from 'redux-observable';
 import {of, from} from 'rxjs';
 import {
-    mergeMap, exhaustMap,
+    mergeMap, exhaustMap, catchError,
 } from 'rxjs/operators';
 
 import {LOGIN_START} from '@/redux/names/login';
@@ -14,7 +14,7 @@ import {
     loginSuccessAction,
 } from '@/redux/actions/login';
 import {login} from '@/services/auth';
-import {showNormalMessage} from '@/redux/actions/messages';
+import {showNormalMessage, showUnknownErrorMessage} from '@/redux/actions/messages';
 
 const loginEpic = action$ =>
     action$.pipe(
@@ -23,26 +23,26 @@ const loginEpic = action$ =>
             ({payload: {body}}) =>
                 from(
                     login(body),
-                )
-                    .pipe(
-                        mergeMap(
-                            ({ok, error, accessJwt, refreshJwt}) => {
-                                if (!ok) {
-                                    return of(
-                                        loginErrorAction(error),
-                                    );
-                                }
-
+                ).pipe(
+                    mergeMap(
+                        ({ok, error, accessJwt, refreshJwt}) => {
+                            if (!ok) {
                                 return of(
-                                    authenticateAction({accessJwt, refreshJwt}),
-                                    showNormalMessage('Вход', 'Вы успешно вошли в систему'),
-                                    saveTokenAction(refreshJwt),
-                                    loginSuccessAction(),
+                                    loginErrorAction(error),
                                 );
-                            },
-                        ),
+                            }
+
+                            return of(
+                                authenticateAction({accessJwt, refreshJwt}),
+                                showNormalMessage('Вход', 'Вы успешно вошли в систему'),
+                                saveTokenAction(refreshJwt),
+                                loginSuccessAction(),
+                            );
+                        },
                     ),
+                ),
         ),
+        catchError(() => of(showUnknownErrorMessage())),
     );
 
 

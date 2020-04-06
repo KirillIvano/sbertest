@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {render} from 'react-dom';
 import {Provider as StoreProvider} from 'react-redux';
+import 'babel-polyfill';
 
 import {Header, Editor, DiagramsPanel, MessageBox, AuthModal} from '@/parts';
 import {store} from '@/redux';

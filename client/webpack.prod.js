@@ -29,8 +29,8 @@ const prod = {
             filename: 'index.html',
         }),
         new webpack.DefinePlugin({
-            SERVER_ORIGIN: '"http://194.67.113.29:5000"',
-            IMAGE_HOST: '"http://194.67.113.29:5000/diagrams"',
+            // SERVER_ORIGIN: '"http://194.67.113.29:5000"',
+            SERVER_ORIGIN: '"http://localhost:5000"',
         }),
         new CopyWebpackPlugin([
             { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },

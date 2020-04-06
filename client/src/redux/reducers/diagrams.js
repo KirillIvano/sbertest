@@ -22,6 +22,7 @@ import {
     RENAME_DIAGRAM_ERROR,
     RENAME_DIAGRAM_SUCCESS,
 } from '@/redux/names/diagrams';
+import {UNLOGIN} from '@/redux/names/auth';
 
 const INITIAL_STATE = {
     diagrams: [],
@@ -232,7 +233,9 @@ export const diagramsReducer = (
             diagramSavingError: error,
         };
     }
-
+    case UNLOGIN: {
+        return INITIAL_STATE;
+    }
     default: {
         return state;
     }
