@@ -40,6 +40,7 @@ const CreateModal = ({
                     value={name}
                     name={'name'}
                     labelText={'Имя диаграммы'}
+                    placeholder={'имя'}
                 />
 
                 <div className={styles.modalControls}>

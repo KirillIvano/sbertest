@@ -3,10 +3,10 @@ import React from 'react';
 import styles from './styles.less';
 
 const InputLabel = ({
-    name,
+    id,
     children,
 }) => (
-    <label className={styles.label} htmlFor={name}>
+    <label className={styles.label} htmlFor={id}>
         {children}
     </label>
 );

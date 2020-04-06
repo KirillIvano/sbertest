@@ -40,6 +40,7 @@ const RenameModal = ({
                     value={name}
                     name={'name'}
                     labelText={'Новое имя диаграммы'}
+                    placeholder={'новое имя'}
                 />
 
                 <div className={styles.modalControls}>

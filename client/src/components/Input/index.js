@@ -5,24 +5,22 @@ import {getLabelId} from '@/helpers/labelId';
 
 import styles from './styles.less';
 
-const LabeledInput = ({
+const Input = ({
     name,
     className,
-
+    id,
     ...props
 }) => {
-    const {current: formId} = useRef(getLabelId());
-
     return (
         <input
             {...props}
             className={classnames(styles.input, {[className]: !!className})}
-            id={formId}
+            id={id}
             name={name}
         />
     );
 };
 
-const enchancedInput = React.memo(LabeledInput);
+const enchancedInput = React.memo(Input);
 
 export default enchancedInput;
