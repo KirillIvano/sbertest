@@ -23,11 +23,11 @@
     cd client
     npm install
 ```
-Затем для dev - режима:
+Затем для dev - режима на localhost:8080:
 ```
     npm run dev
 ```
-Для production:
+Для production(сервится на порте сервера, localhost:5000):
 ```
     npm run prod
 ```
