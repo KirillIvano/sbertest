@@ -1,7 +1,5 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import classnames from 'classnames';
-
-import {getLabelId} from '@/helpers/labelId';
 
 import styles from './styles.less';
 
